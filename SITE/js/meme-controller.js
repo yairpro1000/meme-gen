@@ -8,41 +8,41 @@ var gStartPos
 
 
 function onInit() {
-	gElCanvas = document.querySelector('canvas')
-	gCtx = gElCanvas.getContext('2d')
+    gElCanvas = document.querySelector('canvas')
+    gCtx = gElCanvas.getContext('2d')
 
-	resizeCanvas()
-	// addListeners()
+    resizeCanvas()
+    // addListeners()
     // renderMeme()
-	
+
     renderGallery()
 }
 
 //// CANVAS
 
 function resizeCanvas() {
-	const elContainer = document.querySelector('.canvas-container')
-	gElCanvas.width = elContainer.clientWidth
+    const elContainer = document.querySelector('.canvas-container')
+    gElCanvas.width = elContainer.clientWidth
 }
 
 
 function onClearCanvas() {
-	gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
+    gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
 }
 
 /// MEME
 
 function renderMeme() {
-    const {selectedImgId, lines} = getMeme()
-    const {url: imgUrl} = getImageById(selectedImgId)
-    
+    const { selectedImgId, lines } = getMeme()
+    const { url: imgUrl } = getImageById(selectedImgId)
+
     const elImg = new Image()
-    
+
     function renderFullMeme(img) {
         gElCanvas.height = (img.naturalHeight / img.naturalWidth) * gElCanvas.width
-        
+
         onClearCanvas()
-        
+
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
         lines.forEach(renderText)
     }
@@ -58,9 +58,9 @@ function onTextInput(elTxt) {
 }
 
 function renderText(line) {
-    const {startX, startY, txt, size, font, fontStyle, fillColor, strokeColor} = line
+    const { startX, startY, txt, size, font, fontStyle, fillColor, strokeColor } = line
     gCtx.font = `${fontStyle} ${size}px  ${font}`
-    
+
     gCtx.strokeStyle = strokeColor
     gCtx.fillStyle = fillColor
 
@@ -73,16 +73,18 @@ function renderText(line) {
 function onImgSelect(imgId) {
     setImg(imgId)
     showEditor()
-    renderMeme()
 }
 
 /// NAVIGATION
 function showEditor() {
     const elGallery = document.querySelector('.gallery')
     elGallery.classList.add('hidden')
-    
-    const elEditor = document.querySelector('.editor')
-    elEditor.classList.remove('hidden')
-    resizeCanvas()
+
+    setTimeout(() => {
+        const elEditor = document.querySelector('.editor')
+        resizeCanvas()
+        renderMeme()
+        elEditor.classList.remove('hidden')
+    }, 600)
 }
 

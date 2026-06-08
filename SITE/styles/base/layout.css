@@ -1,0 +1,15 @@
+.main-layout {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(auto, 1000px) minmax(100px, 1fr);
+
+    >* {
+        grid-column: 2;
+        overflow: clip;
+    }
+}
+
+.gallery, .editor {
+    height: 100%;
+    transform: scale(1) rotate(360deg);
+}
+

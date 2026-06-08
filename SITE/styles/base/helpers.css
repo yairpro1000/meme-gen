@@ -1,3 +1,4 @@
-.hidden {
-    display: none;
+.gallery.hidden, .editor.hidden, .hidden {
+    height: 0px;
+    transform: scale(0) rotate(0deg);
 }
