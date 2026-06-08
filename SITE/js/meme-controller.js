@@ -26,35 +26,32 @@ function resizeCanvas() {
 
 /// MEME
 
-function renderMeme(memeId = 1) {
-    onSelectImg(1)
-}
+function renderMeme() {
+    const {selectedImgId, lines} = getMeme()
+    const {url: imgUrl} = getImageById(selectedImgId)
+    
+    const elImg = new Image()
+    
+    function renderFullMeme(img) {
+        gElCanvas.height = (img.naturalHeight / img.naturalWidth) * gElCanvas.width
+        gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
+        lines.forEach(renderText)
+    }
 
-/// IMAGES
-
-function onSelectImg(imgId) {
-	const elImg = new Image()
-
-	elImg.src = `images/${imgId}.jpg`
-	elImg.onload = () => renderImg(elImg)
-}
-
-function renderImg(img) {
-	gElCanvas.height = (img.naturalHeight / img.naturalWidth) * gElCanvas.width
-	gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
-    renderText()
+    elImg.src = imgUrl
+    elImg.onload = () => renderFullMeme(elImg)
 }
 
 /// TEXT
-function renderText(txt = 'Hello World!', x = 100, y = 50, font = 'serif', fontSize = 48, fontStyle = 'bold', strokeColor = 'black', fillColor = 'white') {
-    console.log(txt)
-    gCtx.font = `${fontStyle} ${fontSize}px  ${font}`
-    console.log(gCtx.font, `${fontStyle} ${fontSize}px  ${font}`)
+function renderText(line) {
+    const {startX, startY, txt, size, font, fontStyle, fillColor, strokeColor} = line
+    gCtx.font = `${fontStyle} ${size}px  ${font}`
+    
     gCtx.strokeStyle = strokeColor
     gCtx.fillStyle = fillColor
 
-    gCtx.strokeText(txt, x, y)
-    gCtx.fillText(txt, x, y)
+    gCtx.strokeText(txt, startX, startY)
+    gCtx.fillText(txt, startX, startY)
 }
 
 
