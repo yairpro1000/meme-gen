@@ -24,6 +24,11 @@ function resizeCanvas() {
 	gElCanvas.width = elContainer.clientWidth
 }
 
+
+function onClearCanvas() {
+	gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
+}
+
 /// MEME
 
 function renderMeme() {
@@ -34,6 +39,9 @@ function renderMeme() {
     
     function renderFullMeme(img) {
         gElCanvas.height = (img.naturalHeight / img.naturalWidth) * gElCanvas.width
+        
+        onClearCanvas()
+        
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
         lines.forEach(renderText)
     }
@@ -43,6 +51,11 @@ function renderMeme() {
 }
 
 /// TEXT
+function onTextInput(elTxt) {
+    setLineText(elTxt.value)
+    renderMeme()
+}
+
 function renderText(line) {
     const {startX, startY, txt, size, font, fontStyle, fillColor, strokeColor} = line
     gCtx.font = `${fontStyle} ${size}px  ${font}`

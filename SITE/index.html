@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/styles.css">
     <title>MemeGen</title>
 </head>
+
 <body class="main-layout" onload="onInit()">
     <header class="main-header">
         <h1>Meme Generator</h1>
@@ -16,13 +18,23 @@
     </section>
 
     <section class="editor">Editor
+        <form action="submit" class="meme-form">
+            <label for="lineText">Enter text</label>
+            <input 
+                    type="text" 
+                    name="lineText" 
+                    id="lineText"
+                    oninput="onTextInput(this)">
+
+        </form>
         <div class="canvas-container">
             <canvas width="400" height="400"></canvas>
         </div>
 
     </section>
-    
+
     <script src="js/services/meme.service.js"></script>
     <script src="js/meme-controller.js"></script>
 </body>
+
 </html>
