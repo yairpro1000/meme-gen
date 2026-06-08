@@ -8,16 +8,17 @@
     <title>MemeGen</title>
 </head>
 
-<body class="main-layout" onload="onInit()">
+<body class="main-layout" onload="onInit()"" onresize="resizeCanvas()">
     <header class="main-header">
         <h1>Meme Generator</h1>
     </header>
 
-    <section class="gallery-container">Gallery
+    <section class="gallery">Gallery
         <!-- <img src="images/1.jpg" alt="img-1" onclick="onSelectImg(1)"> -->
+         <div class="gallery-container"></div>
     </section>
 
-    <section class="editor">Editor
+    <section class="editor hidden">Editor
         <form action="submit" class="meme-form">
             <label for="lineText">Enter text</label>
             <input 
@@ -33,8 +34,10 @@
 
     </section>
 
+    <script src="js/services/image.service.js"></script>
     <script src="js/services/meme.service.js"></script>
     <script src="js/meme-controller.js"></script>
+    <script src="js/gallery-controller.js"></script>
 </body>
 
 </html>

@@ -13,8 +13,9 @@ function onInit() {
 
 	resizeCanvas()
 	// addListeners()
-    renderMeme()
+    // renderMeme()
 	
+    renderGallery()
 }
 
 //// CANVAS
@@ -67,4 +68,21 @@ function renderText(line) {
     gCtx.fillText(txt, startX, startY)
 }
 
+/// GALLERY
+
+function onImgSelect(imgId) {
+    setImg(imgId)
+    showEditor()
+    renderMeme()
+}
+
+/// NAVIGATION
+function showEditor() {
+    const elGallery = document.querySelector('.gallery')
+    elGallery.classList.add('hidden')
+    
+    const elEditor = document.querySelector('.editor')
+    elEditor.classList.remove('hidden')
+    resizeCanvas()
+}
 

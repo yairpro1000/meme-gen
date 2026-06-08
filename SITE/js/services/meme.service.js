@@ -1,7 +1,5 @@
 'use strict'
 
-var gImgs = [{ id: 1, url: 'images/1.jpg', keywords: ['funny', 'politics'] }]
-
 var gMeme = {
     selectedImgId: 1,
     selectedLineIdx: 0,
@@ -39,10 +37,11 @@ function getMeme() {
     return gMeme
 }
 
-function getImageById(imgId) {
-    return gImgs.find(img => img.id === imgId)
-}
-
 function setLineText(txt) {
     gMeme.lines[gMeme.selectedLineIdx].txt = txt
+}
+
+function setImg(imgId) {
+    console.log(imgId)
+    gMeme.selectedImgId = imgId
 }
