@@ -21,8 +21,11 @@ function onInit() {
 //// CANVAS
 
 function resizeCanvas() {
+    gElCanvas.width = 0
     const elContainer = document.querySelector('.canvas-container')
     gElCanvas.width = elContainer.clientWidth
+
+    renderMeme()
 }
 
 

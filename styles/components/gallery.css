@@ -1,11 +1,12 @@
 .gallery .gallery-container {
-    columns: 2 300px;
+    columns: 10 300px;
     max-width: 100vw;
     
     img {
         display: block;
 
         width: 100%;
+        max-width: 300px;
 
         border-radius: 20px;
 
