@@ -5,11 +5,13 @@ var gMeme = {
     selectedLineIdx: 0,
     lines: [
         {   
-            startX: 100,
-            startY: 50,
-            endX: 0,
-            endY: 0,
             txt: 'I sometimes eat Falafel',
+            width: 0,
+            startX: 100,
+            endX: 0,
+            height: 0,
+            bottom: 50,
+            top: 0,
             size: 30,
             font: 'serif',
             fontStyle: 'bold',
@@ -17,16 +19,18 @@ var gMeme = {
             strokeColor: 'red',
         },
         {   
+            txt: 'Hello',
+            width: 0,
             startX: 100,
-            startY: 150,
             endX: 0,
-            endY: 0,
-            txt: 'I sometimes eat Falafel too',
+            height: 0,
+            bottom: 150,
+            top: 0,
             size: 40,
             font: 'arial',
             fontStyle: 'italic',
-            fillColor: 'blue',
             strokeColor: 'white',
+            fillColor: 'blue',
         }
     ]
 }
@@ -37,8 +41,51 @@ function getMeme() {
     return gMeme
 }
 
+function addLine() {
+    const newLine = structuredClone(gMeme.lines[gMeme.selectedLineIdx])
+    newLine.txt = 'Say Whay??'
+    newLine.startX = 10
+    newLine.startY = 10
+    gMeme.lines.push(newLine)
+    gMeme.selectedLineIdx = gMeme.lines.length - 1
+}
+
+function getSelectedLine() {
+    return gMeme.lines[gMeme.selectedLineIdx]
+}
+
+function getSelectedLineIdx() {
+    return gMeme.selectedLineIdx
+}
+
+function setSelectedLineIdx(idx) {
+    gMeme.selectedLineIdx = idx
+}
+
+function nextLine() {
+    gMeme.selectedLineIdx++
+    if (gMeme.selectedLineIdx === gMeme.lines.length) gMeme.selectedLineIdx = 0
+}
+
 function setLineText(txt) {
     gMeme.lines[gMeme.selectedLineIdx].txt = txt
+}
+
+function setLineStrokeColor(color) {
+    gMeme.lines[gMeme.selectedLineIdx].strokeColor = color
+}
+
+function setLineFillColor(color) {
+    gMeme.lines[gMeme.selectedLineIdx].fillColor = color
+}
+
+function setLineProportions(idx, lineProportions) {
+    const {width, actualBoundingBoxAscent: height} = lineProportions
+    const line = gMeme.lines[idx]
+    line.width = width
+    line.endX = line.startX + width
+    line.height = height
+    line.top = line.bottom - (height + 1)
 }
 
 function setImg(imgId) {

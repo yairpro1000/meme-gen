@@ -4,7 +4,7 @@ var gElCanvas
 var gCtx
 
 var gIsMouseDown = false
-var gStartPos
+var gIsLineSelected = false
 
 
 function onInit() {
@@ -33,9 +33,18 @@ function onClearCanvas() {
     gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
 }
 
+function onDownloadCanvas(elLink) {
+    console.log(getDataUrl())
+    elLink.href = getDataUrl()
+}
+
+function getDataUrl() {
+    return gElCanvas.toDataURL()
+}
+
 /// MEME
 
-function renderMeme() {
+function renderMeme(selectedLine) {
     const { selectedImgId, lines } = getMeme()
     const { url: imgUrl } = getImageById(selectedImgId)
 
@@ -47,7 +56,9 @@ function renderMeme() {
         onClearCanvas()
 
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
-        lines.forEach(renderText)
+        lines.forEach((line, idx) => renderText(line, idx))
+
+        if (selectedLine) drawLineRect(selectedLine)
     }
 
     elImg.src = imgUrl
@@ -55,20 +66,57 @@ function renderMeme() {
 }
 
 /// TEXT
-function onTextInput(elTxt) {
-    setLineText(elTxt.value)
+function onTextInput(txt) {
+    setLineText(txt)
     renderMeme()
 }
 
-function renderText(line) {
-    const { startX, startY, txt, size, font, fontStyle, fillColor, strokeColor } = line
+function onAddLine() {
+    addLine()
+    renderMeme()
+}
+
+function onSetStrokeColor(color) {
+    setLineStrokeColor(color)
+    renderMeme()
+}
+
+function onSetFillColor(color) {
+    setLineFillColor(color)
+    renderMeme()
+}
+
+function renderText(line, idx) {
+    const { startX, bottom, txt, size, font, fontStyle, fillColor, strokeColor } = line
     gCtx.font = `${fontStyle} ${size}px  ${font}`
 
     gCtx.strokeStyle = strokeColor
     gCtx.fillStyle = fillColor
 
-    gCtx.strokeText(txt, startX, startY)
-    gCtx.fillText(txt, startX, startY)
+    gCtx.strokeText(txt, startX, bottom)
+    gCtx.fillText(txt, startX, bottom)
+
+    setLineProportions(idx, gCtx.measureText(txt))
+}
+
+function renderTextInput(txt) {
+    const elTxtInput = document.querySelector('#lineText')
+    elTxtInput.value = txt
+}
+
+function onSwitchLine() {
+    nextLine()
+    const line = getSelectedLine()
+
+    renderMeme(line)
+    renderTextInput(line.txt)
+}
+
+function drawLineRect(line) {
+    const { startX, top, width, height } = line
+    gCtx.strokeStyle = 'gray'
+    
+    gCtx.strokeRect(startX, top - 2, width, height + 6)
 }
 
 /// GALLERY

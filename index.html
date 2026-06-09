@@ -18,18 +18,41 @@
          <div class="gallery-container"></div>
     </section>
 
-    <section class="editor main-layout full hidden">Editor
-        <form action="submit" class="meme-form">
-            <label for="lineText">Enter text</label>
-            <input 
-                    type="text" 
-                    name="lineText" 
-                    id="lineText"
-                    oninput="onTextInput(this)">
-
-        </form>
+    <section class="editor hidden">
         <div class="canvas-container">
             <canvas width="400" height="400"></canvas>
+        </div>
+        <div class="edit-pannel">
+            <form class="edit-form" action="submit" class="meme-form">
+                <label for="lineText">Enter text</label>
+                <input  type="text"
+                        name="lineText"
+                        id="lineText"
+                        oninput="onTextInput(this.value)">
+
+                        <button type="button" 
+                        onclick="onAddLine()">+</button>
+                
+                        <button type="button" 
+                        onclick="onSwitchLine()">🔁</button>
+                
+                        <label for="stroke-color">🖌️</label>
+                        <input type="color" 
+                        name="stroke-color" 
+                        id="stroke-color"
+                        oninput="onSetStrokeColor(this.value)">
+                        
+                        <label for="fill-color">🎨</label>
+                        <input type="color" 
+                            name="fill-color" 
+                            id="fill-color"
+                             oninput="onSetFillColor(this.value)">
+            </form>
+            <div class="share">
+                <button type="button" class="download-btn">
+                    <a href="#" download="my-meme.png" onclick=onDownloadCanvas(this)>Download</a>
+                </button>
+            </div>
         </div>
 
     </section>
