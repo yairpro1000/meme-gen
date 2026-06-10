@@ -91,13 +91,13 @@ function renderText(line, idx) {
     
     gCtx.font = `${fontStyle} ${size}px  ${font}`
     
-    setLineProportions(idx, gCtx.measureText(txt))
+    setLineProportions(idx, gCtx.measureText(txt), gElCanvas)
     drawLineRect()
     
     gCtx.strokeStyle = strokeColor
     gCtx.fillStyle = fillColor
-    gCtx.strokeText(txt, startX, bottom)
-    gCtx.fillText(txt, startX, bottom)
+    gCtx.strokeText(txt, startX, bottom, gElCanvas.width - startX)
+    gCtx.fillText(txt, startX, bottom, gElCanvas.width - startX)
 }
 
 function renderTextInput(txt) {

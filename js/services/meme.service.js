@@ -7,7 +7,7 @@ var gMeme = {
         {   
             txt: 'I sometimes\neat Falafel',
             width: 0,
-            startX: 100,
+            startX: 10,
             endX: 0,
             height: 0,
             bottom: 50,
@@ -21,7 +21,7 @@ var gMeme = {
         {   
             txt: 'Hello',
             width: 0,
-            startX: 100,
+            startX: 20,
             endX: 0,
             height: 0,
             bottom: 150,
@@ -80,11 +80,11 @@ function setLineFillColor(color) {
     gMeme.lines[gMeme.selectedLineIdx].fillColor = color
 }
 
-function setLineProportions(idx, lineProportions) {
+function setLineProportions(idx, lineProportions, elCanvas) {
     const {width, actualBoundingBoxAscent: height} = lineProportions
     const line = gMeme.lines[idx]
-    line.width = width
-    line.endX = line.startX + width
+    line.width = Math.min(width, elCanvas.width)
+    line.endX = line.startX + line.width
     line.height = height
     line.top = line.bottom - (height + 1)
 }
