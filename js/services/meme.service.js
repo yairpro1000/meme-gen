@@ -2,10 +2,10 @@
 
 var gMeme = {
     selectedImgId: 1,
-    selectedLineIdx: 0,
+    selectedLineIdx: -1,
     lines: [
         {   
-            txt: 'I sometimes eat Falafel',
+            txt: 'I sometimes\neat Falafel',
             width: 0,
             startX: 100,
             endX: 0,
@@ -51,6 +51,7 @@ function addLine() {
 }
 
 function getSelectedLine() {
+    if (gMeme.selectedLineIdx === -1) return null
     return gMeme.lines[gMeme.selectedLineIdx]
 }
 
