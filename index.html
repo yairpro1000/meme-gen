@@ -19,6 +19,7 @@
     </section>
 
     <section class="editor hidden">
+    <!-- <section class="editor"> -->
         <div class="canvas-container">
             <canvas width="400" height="400"></canvas>
         </div>
@@ -36,6 +37,12 @@
                         <button type="button" 
                         onclick="onSwitchLine()">🔁</button>
                 
+                        <button type="button" 
+                        onclick="onChangeFontSize(1)">A+</button>
+                
+                        <button type="button" 
+                        onclick="onChangeFontSize(-1)">A-</button>
+                
                         <label for="stroke-color">🖌️</label>
                         <input type="color" 
                         name="stroke-color" 
@@ -47,6 +54,36 @@
                             name="fill-color" 
                             id="fill-color"
                              oninput="onSetFillColor(this.value)">
+                        
+                        <select 
+                        name="font-family" 
+                        id="font-family" 
+                        class="font-family" 
+                        onchange="onSetFontFamily(this.value)">
+                            <option value="arial">Arial</option>
+                            <option value="verdana">Verdana</option>
+                            <option value="cursive">Cursive</option>
+                        </select>
+                        
+                        <select 
+                        name="font-style" 
+                        id="font-style" 
+                        class="font-style" 
+                        onchange="onSetFontStyle(this.value)">
+                            <option value="bold">B</option>
+                            <option value="underline">U</option>
+                            <option value="italic">I</option>
+                        </select>
+                        
+                        <select 
+                        name="text-align" 
+                        id="text-align" 
+                        class="text-align" 
+                        onchange="onSetTextAlign(this)">
+                        <option value="left">◀️</option>
+                        <option value="center">↔️</option>
+                            <option value="right">▶️</option>
+                        </select>
             </form>
             <div class="share">
                 <button type="button" class="download-btn">

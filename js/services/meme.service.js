@@ -1,34 +1,42 @@
 'use strict'
 
 var gMeme = {
-    selectedImgId: 1,
+    selectedImgId: 2,
     selectedLineIdx: -1,
+    isLineDrag: false,
+    isLineResize: false,
     lines: [
-        {   
+        {
             txt: 'I sometimes\neat Falafel',
+            textAlign: 'center',
             width: 0,
-            startX: 10,
+            startX: 100,
+            boxStartX: 0,
             endX: 0,
             height: 0,
             bottom: 50,
             top: 0,
-            size: 30,
+            sizeRatio: .1,
             font: 'serif',
             fontStyle: 'bold',
+            isUnderline: false,
             fillColor: 'white',
             strokeColor: 'red',
         },
-        {   
+        {
             txt: 'Hello',
+            textAlign: 'center',
             width: 0,
             startX: 20,
+            boxStartX: 0,
             endX: 0,
             height: 0,
             bottom: 150,
             top: 0,
-            size: 40,
+            sizeRatio: .15,
             font: 'arial',
             fontStyle: 'italic',
+            isUnderline: true,
             strokeColor: 'white',
             fillColor: 'blue',
         }
@@ -41,13 +49,13 @@ function getMeme() {
     return gMeme
 }
 
-function addLine() {
-    const newLine = structuredClone(gMeme.lines[gMeme.selectedLineIdx])
+function addLine(elCanvas) {
+    const newLine = structuredClone(gMeme.lines[0])
     newLine.txt = 'Say Whay??'
-    newLine.startX = 10
-    newLine.startY = 10
+    newLine.startX = elCanvas.width / 2
+    newLine.bottom = elCanvas.height / 2
     gMeme.lines.push(newLine)
-    gMeme.selectedLineIdx = gMeme.lines.length - 1
+    // gMeme.selectedLineIdx = gMeme.lines.length - 1
 }
 
 function getSelectedLine() {
@@ -68,8 +76,50 @@ function nextLine() {
     if (gMeme.selectedLineIdx === gMeme.lines.length) gMeme.selectedLineIdx = 0
 }
 
+function setLineDrag(isDrag) {
+    gMeme.isLineDrag = isDrag
+}
+
+function setLineResizeState(isResize) {
+    gMeme.isLineResize = isResize
+}
+
+function getHoveredLine(pos, isMouseDown) {
+    const hoveredLineIdx = getMeme().lines.findIndex(line =>
+        pos.x >= line.boxStartX - 5 && pos.x <= line.endX + 5 &&
+        pos.y >= line.top - 5 && pos.y <= line.bottom + 5)
+
+    if (hoveredLineIdx === -1) return null
+
+    if (isMouseDown) setSelectedLineIdx(hoveredLineIdx)
+        
+    return gMeme.lines[hoveredLineIdx]
+}
+
+function isNWpoint(pos) {
+    const line = getHoveredLine(pos)
+    return pos.x >= line.boxStartX - 5 && pos.x <= line.boxStartX + 8 &&
+        pos.y >= line.top - 5 && pos.y <= line.top + 8
+}
+
+// Move the line by a delta from the pervious pos
+
+function moveLine(dx, dy) {
+    const line = getSelectedLine()
+    line.startX += dx
+    line.boxStartX += dx
+    line.endX += dx
+    line.top += dy
+    line.bottom += dy
+}
+
 function setLineText(txt) {
     gMeme.lines[gMeme.selectedLineIdx].txt = txt
+}
+
+function setFontSize(newSizeRatio) {
+    if (newSizeRatio < 0.04) return // Avoid extremely small
+    gMeme.lines[gMeme.selectedLineIdx].sizeRatio = newSizeRatio
 }
 
 function setLineStrokeColor(color) {
@@ -80,16 +130,51 @@ function setLineFillColor(color) {
     gMeme.lines[gMeme.selectedLineIdx].fillColor = color
 }
 
-function setLineProportions(idx, lineProportions, elCanvas) {
-    const {width, actualBoundingBoxAscent: height} = lineProportions
+function setLineFontFamily(fontFamily) {
+    gMeme.lines[gMeme.selectedLineIdx].font = fontFamily
+}
+
+function setLineFontStyle(fontStyle) {
+    if (fontStyle === 'underline') gMeme.lines[gMeme.selectedLineIdx].isUnderline = true
+    else gMeme.lines[gMeme.selectedLineIdx].fontStyle = fontStyle
+}
+
+function setLineTextAlign(textAlign) {
+    gMeme.lines[gMeme.selectedLineIdx].textAlign = textAlign
+}
+
+function setLineStartX(elCanvas, ctx) {
+    const line = getSelectedLine()
+    switch (line.textAlign) {
+        case 'right': 
+        line.startX = elCanvas.width - line.width / 2
+        break
+
+        case 'left': 
+        line.startX = 0 + line.width / 2
+        break
+
+        default: line.startX = elCanvas.width / 2
+    }
+
+    setLineProportions(gMeme.selectedLineIdx, ctx, elCanvas)
+}
+
+
+function setLineProportions(idx, ctx, elCanvas) {
     const line = gMeme.lines[idx]
+    
+    const size = Math.ceil(line.sizeRatio * elCanvas.width)
+    gCtx.font = `${line.fontStyle} ${size}px  ${line.font}`
+    const { width, actualBoundingBoxAscent: height } = ctx.measureText(line.txt)
+
     line.width = Math.min(width, elCanvas.width)
-    line.endX = line.startX + line.width
+    line.boxStartX = line.startX - line.width / 2
+    line.endX = line.boxStartX + line.width
     line.height = height
     line.top = line.bottom - (height + 1)
 }
 
 function setImg(imgId) {
-    console.log(imgId)
     gMeme.selectedImgId = imgId
 }

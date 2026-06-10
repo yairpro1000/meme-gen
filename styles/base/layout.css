@@ -24,10 +24,3 @@
     grid-auto-flow: column;
     gap: 10px;
 }
-
-@media (width < 700px) {
-    .editor {
-        grid-template-columns: 1fr;
-        grid-auto-flow: row;
-    }
-}
