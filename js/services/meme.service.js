@@ -1,6 +1,6 @@
 'use strict'
 
-var gMeme = _createMeme(2)
+var gMeme = _createMeme(0)
 
 function getMeme() {
     return gMeme
@@ -144,17 +144,17 @@ function _createMeme(imgId) {
     isLineResize: false,
     lines: [
         {
-            txt: 'Add your text here',
+            txt: 'Wazzup??',
             textAlign: 'center',
             width: 0,
             startX: 100,
             boxStartX: 0,
             endX: 0,
             height: 0,
-            bottom: 50,
+            bottom: 200,
             top: 0,
             sizeRatio: .1,
-            font: 'serif',
+            font: 'poppins-medium',
             fontStyle: 'bold',
             isUnderline: false,
             fillColor: 'white',

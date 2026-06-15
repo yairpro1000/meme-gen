@@ -15,9 +15,9 @@ function onInit() {
 
     resizeCanvas()
     addListeners()
-    // renderMeme()
 
     renderGallery()
+    showGallery()
 }
 
 function addListeners() {
@@ -81,7 +81,7 @@ function onMove(ev) {
     const dx = pos.x - gCurrPos.x
     const dy = pos.y - gCurrPos.y
 
-    if (isLineResize) onChangeFontSize(-(dx + dy), 'pixel')
+    if (isLineResize) onChangeFontSize(-(dx + dy) / 2, 'pixel')
     else moveLine(dx, dy)
 
 
@@ -161,12 +161,13 @@ function renderMeme() {
     const elImg = new Image()
 
     function renderFullMeme(img) {
-        gElCanvas.height = (img.naturalHeight / img.naturalWidth) * gElCanvas.width
+        const imgRatio = img.naturalHeight / img.naturalWidth
+        gElCanvas.height = imgRatio * gElCanvas.width
 
         onClearCanvas()
-
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
         lines.forEach((line, idx) => renderText(line, idx))
+        onSelectLine()
     }
 
     elImg.src = imgUrl
@@ -222,8 +223,16 @@ function onSetTextAlign(elTextAlign) {
     elTextAlign.value = ''
 }
 
+function onSetTextAlign2(alignValue) {
+    setLineTextAlign(alignValue)
+    setLineStartX(gElCanvas, gCtx)
+    renderMeme()
+
+    elTextAlign.value = ''
+}
+
 function renderText(line, idx) {
-    const { txt, textAlign, startX, boxStartX, bottom, sizeRatio, font, fontStyle, isUnderline, fillColor, strokeColor } = line
+    const { txt, textAlign, startX, boxStartX, top, bottom, sizeRatio, font, fontStyle, isUnderline, fillColor, strokeColor } = line
 
     const size = Math.ceil(sizeRatio * gElCanvas.width)
     gCtx.font = `${fontStyle} ${size}px  ${font}`
@@ -234,8 +243,9 @@ function renderText(line, idx) {
 
     gCtx.strokeStyle = strokeColor
     gCtx.fillStyle = fillColor
-    gCtx.strokeText(txt, startX, bottom, gElCanvas.width - boxStartX)
-    gCtx.fillText(txt, startX, bottom, gElCanvas.width - boxStartX)
+    // gCtx.strokeText(txt, startX, bottom, gElCanvas.width - boxStartX)
+    gCtx.fillText(txt.toUpperCase(), startX, bottom, gElCanvas.width - boxStartX)
+    
 
     if (isUnderline) {
         gCtx.beginPath();
@@ -259,8 +269,6 @@ function onSwitchLine() {
 
 function onSelectLine() {
     const line = getSelectedLine()
-
-    renderMeme()
     renderTextInput(line.txt)
 }
 
@@ -288,7 +296,7 @@ function drawLineRect(idx) {
 /// GALLERY
 
 function onImgSelect(imgId) {
-    setImg(imgId)
+    setMemeImg(imgId)
     showEditor()
 }
 
@@ -296,6 +304,10 @@ function onImgSelect(imgId) {
 function showEditor() {
     const elGallery = document.querySelector('.gallery')
     elGallery.classList.add('hidden')
+
+    // const elFilePicker = document.querySelector('.editor .file-picker-wrapper')
+    // if (getMeme().selectedImgId === 0) elFilePicker.classList.remove('hidden')
+    //     else elFilePicker.classList.add('hidden')
 
     setTimeout(() => {
         const elEditor = document.querySelector('.editor')
