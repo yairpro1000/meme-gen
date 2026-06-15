@@ -276,6 +276,13 @@ function drawLineRect(idx) {
     gCtx.roundRect(boxStartX - 10, top - 10, width + 20, height + 20, [20])
     gCtx.stroke()
     gCtx.fill()
+
+    // Resize arrow
+    if (gElCanvas.width <= 700) {
+    const elImg = new Image()
+    elImg.onload = () => {gCtx.drawImage(elImg, boxStartX - 15, top - 15, 25, 25)}
+    elImg.src = 'images/svg/resize_arrow.svg'
+    }
 }
 
 /// GALLERY
