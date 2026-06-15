@@ -1,7 +1,6 @@
 .main-header {
-        /* position: sticky; */
-    /* top: .5rem; */
-    z-index: 10;
+    height: max-content;
+    /* z-index: 10; */
 
     margin: .5rem;  
     /* background: linear-gradient(45deg, #0f9bb4, #30bb72); */
