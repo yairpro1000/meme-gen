@@ -15,6 +15,11 @@ function addLine(elCanvas) {
     gMeme.selectedLineIdx = gMeme.lines.length - 1
 }
 
+function removeLine() {
+    gMeme.lines.splice(gMeme.selectedLineIdx, 1)
+    gMeme.selectedLineIdx--
+}
+
 function getSelectedLine() {
     if (gMeme.selectedLineIdx === -1) return null
     return gMeme.lines[gMeme.selectedLineIdx]
