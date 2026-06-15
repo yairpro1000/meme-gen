@@ -12,7 +12,7 @@ function addLine(elCanvas) {
     newLine.startX = elCanvas.width / 2
     newLine.bottom = elCanvas.height / 2
     gMeme.lines.push(newLine)
-    // gMeme.selectedLineIdx = gMeme.lines.length - 1
+    gMeme.selectedLineIdx = gMeme.lines.length - 1
 }
 
 function getSelectedLine() {
@@ -132,6 +132,51 @@ function setLineProportions(idx, ctx, elCanvas) {
     line.top = line.bottom - (height + 1)
 }
 
-function setImg(imgId) {
+function setMemeImg(imgId) {
     gMeme.selectedImgId = imgId
+}
+
+function _createMeme(imgId) {
+    return {
+    selectedImgId: imgId,
+    selectedLineIdx: 0,
+    isLineDrag: false,
+    isLineResize: false,
+    lines: [
+        {
+            txt: 'Add your text here',
+            textAlign: 'center',
+            width: 0,
+            startX: 100,
+            boxStartX: 0,
+            endX: 0,
+            height: 0,
+            bottom: 50,
+            top: 0,
+            sizeRatio: .1,
+            font: 'serif',
+            fontStyle: 'bold',
+            isUnderline: false,
+            fillColor: 'white',
+            strokeColor: 'red',
+        },
+        // {
+        //     txt: 'Hello',
+        //     textAlign: 'center',
+        //     width: 0,
+        //     startX: 20,
+        //     boxStartX: 0,
+        //     endX: 0,
+        //     height: 0,
+        //     bottom: 150,
+        //     top: 0,
+        //     sizeRatio: .15,
+        //     font: 'arial',
+        //     fontStyle: 'italic',
+        //     isUnderline: true,
+        //     strokeColor: 'white',
+        //     fillColor: 'blue',
+        // }
+    ]
+}
 }
