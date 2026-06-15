@@ -14,6 +14,8 @@
 .main-layout {
     display: grid;
     grid-template-columns: minmax(50px, 1fr) minmax(auto, 1000px) minmax(50px, 1fr);
+    align-content: start;
+    row-gap: 1rem;
 
     >* {
         grid-column: 2;
@@ -34,6 +36,10 @@
 .editor {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 1rem 50px;
+
+    .edit-pannel {
+
+    }
 }
 

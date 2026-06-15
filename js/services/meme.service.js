@@ -7,8 +7,7 @@ function getMeme() {
 }
 
 function addLine(elCanvas) {
-    const newLine = structuredClone(gMeme.lines[0])
-    newLine.txt = 'Say Whay??'
+    const newLine = structuredClone(_createMeme().lines[0])
     newLine.startX = elCanvas.width / 2
     newLine.bottom = elCanvas.height / 2
     gMeme.lines.push(newLine)
@@ -97,8 +96,13 @@ function setLineFontFamily(fontFamily) {
 }
 
 function setLineFontStyle(fontStyle) {
-    if (fontStyle === 'underline') gMeme.lines[gMeme.selectedLineIdx].isUnderline = true
-    else gMeme.lines[gMeme.selectedLineIdx].fontStyle = fontStyle
+    if (fontStyle === 'underline') {
+        gMeme.lines[gMeme.selectedLineIdx].isUnderline = !gMeme.lines[gMeme.selectedLineIdx].isUnderline
+        return
+    }
+    const currStyle = gMeme.lines[gMeme.selectedLineIdx].fontStyle
+    const newStyle = fontStyle === currStyle? 'normal' : fontStyle
+    gMeme.lines[gMeme.selectedLineIdx].fontStyle = newStyle
 }
 
 function setLineTextAlign(textAlign) {
@@ -109,11 +113,11 @@ function setLineStartX(elCanvas, ctx) {
     const line = getSelectedLine()
     switch (line.textAlign) {
         case 'right': 
-        line.startX = elCanvas.width - line.width / 2
+        line.startX = elCanvas.width - line.width / 2 - 10
         break
 
         case 'left': 
-        line.startX = 0 + line.width / 2
+        line.startX = line.width / 2 + 10
         break
 
         default: line.startX = elCanvas.width / 2

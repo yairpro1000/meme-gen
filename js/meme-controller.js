@@ -163,6 +163,7 @@ function renderMeme() {
     function renderFullMeme(img) {
         const imgRatio = img.naturalHeight / img.naturalWidth
         gElCanvas.height = imgRatio * gElCanvas.width
+        document.querySelector('.edit-pannel').style.heightOffset = imgRatio * gElCanvas.width
 
         onClearCanvas()
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
@@ -250,7 +251,7 @@ function renderText(line, idx) {
     gCtx.fillStyle = fillColor
     // gCtx.strokeText(txt, startX, bottom, gElCanvas.width - boxStartX)
     gCtx.fillText(txt.toUpperCase(), startX, bottom, gElCanvas.width - boxStartX)
-    
+
 
     if (isUnderline) {
         gCtx.beginPath();
@@ -262,19 +263,20 @@ function renderText(line, idx) {
     }
 }
 
-function renderTextInput(txt) {
-    const elTxtInput = document.querySelector('#lineText')
-    elTxtInput.value = txt
-}
-
 function onSwitchLine() {
     nextLine()
-    onSelectLine()
+    renderMeme()
 }
 
 function onSelectLine() {
     const line = getSelectedLine()
-    renderTextInput(line.txt)
+    if (!line) renderTextInput('')
+    else renderTextInput(line.txt)
+}
+
+function renderTextInput(txt) {
+    const elTxtInput = document.querySelector('#lineText')
+    elTxtInput.value = txt
 }
 
 function drawLineRect(idx) {
@@ -292,9 +294,9 @@ function drawLineRect(idx) {
 
     // Resize arrow
     if (gElCanvas.width <= 700) {
-    const elImg = new Image()
-    elImg.onload = () => {gCtx.drawImage(elImg, boxStartX - 15, top - 15, 25, 25)}
-    elImg.src = 'images/svg/resize_arrow.svg'
+        const elImg = new Image()
+        elImg.onload = () => { gCtx.drawImage(elImg, boxStartX - 15, top - 15, 25, 25) }
+        elImg.src = 'images/svg/resize_arrow.svg'
     }
 }
 
@@ -310,9 +312,9 @@ function showEditor() {
     const elGallery = document.querySelector('.gallery')
     elGallery.classList.add('hidden')
 
-    // const elFilePicker = document.querySelector('.editor .file-picker-wrapper')
-    // if (getMeme().selectedImgId === 0) elFilePicker.classList.remove('hidden')
-    //     else elFilePicker.classList.add('hidden')
+    const elFilePicker = document.querySelector('.editor .file-picker-wrapper')
+    if (getMeme().selectedImgId === 0) elFilePicker.classList.remove('hidden')
+        else elFilePicker.classList.add('hidden')
 
     setTimeout(() => {
         const elEditor = document.querySelector('.editor')
@@ -326,11 +328,11 @@ function showGallery() {
     console.log('gallery')
     const elEditor = document.querySelector('.editor')
     elEditor.classList.add('hidden')
-    
+
     setTimeout(() => {
         renderKeywords(6)
         renderGallery()
-        
+
         const elGallery = document.querySelector('.gallery')
         elGallery.classList.remove('hidden')
     }, 600)
