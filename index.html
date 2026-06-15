@@ -8,9 +8,20 @@
     <title>MemeGen</title>
 </head>
 
-<body class="main-layout" onload="onInit()"" onresize="resizeCanvas()">
-    <header class="main-header">
-        <h1>Meme Generator</h1>
+<body class="main-layout" onload="onInit()" onresize=" resizeCanvas()">
+    <div class="background">
+        <img src="images/svg/background-rays.svg" alt="">
+    </div>
+
+
+    <header class="main-header main-layout full">
+        <div class="header-container">
+            <h1>Logo</h1>
+            <nav class="main-nav">
+                <a href="#" onclick="showGallery()">Gallery</a>
+                <a href="#" onclick="showEditor()">Editor</a>
+            </nav>
+        </div>
     </header>
 
     <section class="gallery">Gallery
