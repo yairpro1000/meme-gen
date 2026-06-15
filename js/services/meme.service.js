@@ -1,49 +1,6 @@
 'use strict'
 
-var gMeme = {
-    selectedImgId: 2,
-    selectedLineIdx: -1,
-    isLineDrag: false,
-    isLineResize: false,
-    lines: [
-        {
-            txt: 'I sometimes\neat Falafel',
-            textAlign: 'center',
-            width: 0,
-            startX: 100,
-            boxStartX: 0,
-            endX: 0,
-            height: 0,
-            bottom: 50,
-            top: 0,
-            sizeRatio: .1,
-            font: 'serif',
-            fontStyle: 'bold',
-            isUnderline: false,
-            fillColor: 'white',
-            strokeColor: 'red',
-        },
-        {
-            txt: 'Hello',
-            textAlign: 'center',
-            width: 0,
-            startX: 20,
-            boxStartX: 0,
-            endX: 0,
-            height: 0,
-            bottom: 150,
-            top: 0,
-            sizeRatio: .15,
-            font: 'arial',
-            fontStyle: 'italic',
-            isUnderline: true,
-            strokeColor: 'white',
-            fillColor: 'blue',
-        }
-    ]
-}
-
-var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
+var gMeme = _createMeme(2)
 
 function getMeme() {
     return gMeme
