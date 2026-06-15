@@ -1,0 +1,21 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="128" cy="128" r="112" fill="gray" opacity="0.55"/>
+
+  <path
+    d="M70 54H125M70 54V109M70 54L186 170M186 170V115M186 170H131"
+    fill="none"
+    stroke="white"
+    stroke-width="26"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <path
+    d="M70 54H125M70 54V109M70 54L186 170M186 170V115M186 170H131"
+    fill="none"
+    stroke="black"
+    stroke-width="14"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
