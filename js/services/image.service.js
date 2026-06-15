@@ -42,13 +42,20 @@ var gKeywordSearchCountMap = {
 function getKeyword2Size() {
     let sizes = []
     for (let k in gKeywordSearchCountMap) {
-        let size = Math.min(1 + gKeywordSearchCountMap[k] / 10, 3)
+        let size = Math.min(1 + gKeywordSearchCountMap[k] / 10, 2.5)
         sizes.push([k, size])
     }
     return sizes
 }
 
-function getImages(keyword = '') {
+function increaseKeywordCount(keyword) {
+    gKeywordSearchCountMap[keyword]++
+}
+
+function getImages(keyword = '', filter = '') {
+    if (filter) {
+        return gImgs.slice(1).filter(img => img.keywords.some(k => k.includes(filter)))
+    }
     if (keyword) return gImgs.slice(1).filter(img => img.keywords.includes(keyword))
 
     return gImgs.slice(1)

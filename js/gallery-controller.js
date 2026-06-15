@@ -1,9 +1,13 @@
 'use strict'
 
 let gKeyword = ''
+let gFilter = ''
+let gIsMore = false
 
-function renderGallery(gKeyword) {
-    const images = getImages(gKeyword)
+function renderGallery(numKeywords = 5) {
+    renderKeywords(numKeywords)
+    
+    const images = getImages(gKeyword, gFilter)
     var imagesStr = ``
 
     const imgStrs = images.map(({id, url}) => {
@@ -19,7 +23,7 @@ function renderKeywords(numKeywords) {
     const sizesStrs = sizes.map(sizeMap => {
         const keyword = sizeMap[0]
         const emSize = sizeMap[1]
-        return `<span class="keyword" style="font-size: ${emSize}em">${keyword}</span>`
+        return `<a href="#" class="keyword" style="font-size: ${emSize}em" onclick="onSelectKeyword('${keyword}')">${keyword}</a>`
     })
     
     const elKeywords = document.querySelector('.gallery-keywords')
@@ -27,3 +31,25 @@ function renderKeywords(numKeywords) {
     
 }
 
+function onFilter(filter) {
+    gFilter = filter
+    gKeyword = ''
+    
+    renderGallery()
+}
+
+function onSelectKeyword(keyword) {
+    gFilter = ''
+    document.querySelector('.keyword-search').value = keyword
+
+    gKeyword = keyword
+    increaseKeywordCount(keyword)
+    
+    renderGallery()
+}
+
+function onMore() {
+    gIsMore = !gIsMore
+    if (gIsMore) renderKeywords()
+        else renderKeywords(5)
+}
