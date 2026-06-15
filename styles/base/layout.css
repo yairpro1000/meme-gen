@@ -1,10 +1,23 @@
+.background {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    background-color: var(--clr-primary--4);
+
+    z-index: 0;
+
+    >img {
+        width: 61%;
+    }
+}
+
 .main-layout {
     display: grid;
     grid-template-columns: minmax(50px, 1fr) minmax(auto, 1000px) minmax(50px, 1fr);
 
     >* {
         grid-column: 2;
-        overflow: clip;
+        /* overflow: clip; */
     }
 
     .full {
@@ -24,3 +37,4 @@
     grid-auto-flow: column;
     gap: 10px;
 }
+

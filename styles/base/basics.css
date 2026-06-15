@@ -4,9 +4,25 @@
 }
 
 html {
-    font-family: sans-serif;
+    font-family: poppins-light;;
 }
 
 body {
     margin: 0;
+    height: 100vh;
+    >* {z-index: 1;}
+}
+
+input, button {
+    border: 0;
+    background-color: inherit;
+}
+
+option {
+    text-align: center;
+}
+
+a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
 }
