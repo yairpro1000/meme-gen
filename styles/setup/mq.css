@@ -3,6 +3,10 @@
         font-size: 13px;
     }
 
+    .background img {
+        width: 100%;
+    }
+
     .main-layout {
         grid-template-columns: minmax(10px, 1fr) minmax(auto, 880px) minmax(10px, 1fr);
     }
