@@ -305,3 +305,86 @@ function showEditor() {
     }, 600)
 }
 
+function showGallery() {
+    console.log('gallery')
+    const elEditor = document.querySelector('.editor')
+    elEditor.classList.add('hidden')
+    
+    setTimeout(() => {
+        renderKeywords(6)
+        renderGallery()
+        
+        const elGallery = document.querySelector('.gallery')
+        elGallery.classList.remove('hidden')
+    }, 600)
+}
+
+/// USER IMAGE
+function onImgInput(ev) {
+    const elFilePicker = document.querySelector('.file-picker')
+    loadImageFromInput(ev)
+
+    elFilePicker.value = ''
+}
+
+function loadImageFromInput(ev) {
+	const reader = new FileReader()
+
+	reader.onload = event => {
+		setUserImg(event.target.result)
+        setMemeImg(0)
+        renderMeme()
+	}
+	reader.readAsDataURL(ev.target.files[0])
+}
+
+/// SHARE CANVAS
+
+function onUploadImg(ev) {
+	ev.preventDefault()
+	const canvasData = gElCanvas.toDataURL('image/jpeg')
+
+	// After a succesful upload, allow the user to share on Facebook
+	function onSuccess(uploadedImgUrl) {
+		const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl)
+		console.log('encodedUploadedImgUrl:', encodedUploadedImgUrl)
+		document.querySelector('.share-container').innerHTML = `
+            <a href="${uploadedImgUrl}" target="_blank">Uploaded picture</a>
+            <p>Image url: ${uploadedImgUrl}</p>
+            <button class="btn-facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}')">
+                Share on Facebook  
+            </button>`
+	}
+
+	uploadImg(canvasData, onSuccess)
+}
+
+async function uploadImg(imgData, onSuccess) {
+	const CLOUD_NAME = 'webify'
+	const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`
+
+	const formData = new FormData()
+	formData.append('file', imgData)
+	formData.append('upload_preset', 'webify')
+
+	try {
+		const res = await fetch(UPLOAD_URL, {
+			method: 'POST',
+			body: formData,
+		})
+		const data = await res.json()
+		console.log('Cloudinary response:', data)
+		onSuccess(data.secure_url)
+	} catch (err) {
+		console.log(err)
+	}
+}
+
+/// Utils
+
+function toggleElementVisible(el) {
+    el.classList.toggle('hidden')
+    setTimeout(() => {
+        el.style.display = 'none'
+    }, 600)
+}
