@@ -160,7 +160,7 @@ function _createMeme(imgId) {
             boxStartX: 0,
             endX: 0,
             height: 0,
-            bottom: 200,
+            bottom: 100,
             top: 0,
             sizeRatio: .1,
             font: 'poppins-medium',
@@ -169,23 +169,6 @@ function _createMeme(imgId) {
             fillColor: 'white',
             strokeColor: 'red',
         },
-        // {
-        //     txt: 'Hello',
-        //     textAlign: 'center',
-        //     width: 0,
-        //     startX: 20,
-        //     boxStartX: 0,
-        //     endX: 0,
-        //     height: 0,
-        //     bottom: 150,
-        //     top: 0,
-        //     sizeRatio: .15,
-        //     font: 'arial',
-        //     fontStyle: 'italic',
-        //     isUnderline: true,
-        //     strokeColor: 'white',
-        //     fillColor: 'blue',
-        // }
     ]
 }
 }
