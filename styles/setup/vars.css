@@ -1,0 +1,10 @@
+:root {
+    --clr-primary-opaque: rgba(235, 238, 243, 0.2);
+    --clr-primary: #EBEEF3;
+    --clr-primary--1: #bbc4d1;
+    --clr-primary--2: #88898c;
+    --clr-primary--3: #393b44;
+    --clr-primary--4: #22252c;
+
+    --clr-gradient-mark: linear-gradient(45deg, #0f9bb4, #30bb72);
+}
