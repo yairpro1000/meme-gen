@@ -271,7 +271,10 @@ function onSwitchLine() {
 function onSelectLine() {
     const line = getSelectedLine()
     if (!line) renderTextInput('')
-    else renderTextInput(line.txt)
+    else {
+        renderTextInput(line.txt)
+        document.querySelector('select.font-family').value = getSelectedLine().font
+    }
 }
 
 function renderTextInput(txt) {
@@ -313,21 +316,27 @@ function showEditor() {
     elGallery.classList.add('hidden')
 
     const elFilePicker = document.querySelector('.editor .file-picker-wrapper')
-    if (getMeme().selectedImgId === 0) elFilePicker.classList.remove('hidden')
-        else elFilePicker.classList.add('hidden')
+    if (!getSelectedImgUrl()) elFilePicker.classList.remove('hidden')
+    else elFilePicker.classList.add('hidden')
 
-    setTimeout(() => {
-        const elEditor = document.querySelector('.editor')
-        resizeCanvas()
-        renderMeme()
+        document.body.classList.remove('gallery-mode')
+
+
+document.querySelector('select.font-family').value = getSelectedLine().font
+
+setTimeout(() => {
+    const elEditor = document.querySelector('.editor')
+    resizeCanvas()
+    renderMeme()
+    
         elEditor.classList.remove('hidden')
-    }, 600)
+    }, 650)
 }
 
 function showGallery() {
-    console.log('gallery')
     const elEditor = document.querySelector('.editor')
     elEditor.classList.add('hidden')
+    document.body.classList.add('gallery-mode')
 
     setTimeout(() => {
         renderKeywords(6)
@@ -340,10 +349,8 @@ function showGallery() {
 
 /// USER IMAGE
 function onImgInput(ev) {
-    const elFilePicker = document.querySelector('.file-picker')
+    const elFilePickers = document.querySelectorAll('.file-picker')
     loadImageFromInput(ev)
-
-    elFilePicker.value = ''
 }
 
 function loadImageFromInput(ev) {
@@ -353,6 +360,7 @@ function loadImageFromInput(ev) {
         setUserImg(event.target.result)
         setMemeImg(0)
         renderMeme()
+        showEditor()
     }
     reader.readAsDataURL(ev.target.files[0])
 }

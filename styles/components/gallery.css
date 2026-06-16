@@ -2,6 +2,13 @@
     /* height: 90vh; */
 }
 
+.gallery-mode .background>img {
+        width: 100%;
+        margin-top: 50vh;
+        transform: translateY(-50%);
+    filter: blur(4px);
+    }
+
 .gallery-wrapper {
     height: 80vh;
     overflow: clip;
@@ -9,6 +16,7 @@
     margin: 1rem;
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.2);
+
 }
 
 .gallery-search {

@@ -1,6 +1,9 @@
-.gallery.hidden, .editor.hidden, .hidden {
+.gallery.hidden,
+.editor.hidden,
+.hidden {
     height: 0px;
-    transform: scale(0);
+    /* transform: scale(0) rotate(180deg); */
+    opacity: 0;
 }
 
 *.display-none {
@@ -15,13 +18,13 @@
     display: grid;
     align-items: center;
     padding-block: 5px;
-    background: linear-gradient(
-360deg, var(--clr-primary--1), white);
-border-radius: 10px;
+    background: linear-gradient(360deg, var(--clr-primary--1), white);
+    border-radius: 10px;
 
 }
 
 .super {
-  vertical-align: super;
-  font-size: 50%; /* מקטין את הגודל כדי שיראה פרופורציונלי */
+    vertical-align: super;
+    font-size: 50%;
+    /* מקטין את הגודל כדי שיראה פרופורציונלי */
 }

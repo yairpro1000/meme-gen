@@ -230,6 +230,7 @@
 
         >div {
             place-items: center;
+            background-color: #8f44bb;
         }
     }
 }

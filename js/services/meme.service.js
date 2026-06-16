@@ -47,8 +47,8 @@ function setLineResizeState(isResize) {
 
 function getHoveredLine(pos, isMouseDown) {
     const hoveredLineIdx = getMeme().lines.findIndex(line =>
-        pos.x >= line.boxStartX - 5 && pos.x <= line.endX + 5 &&
-        pos.y >= line.top - 5 && pos.y <= line.bottom + 5)
+        pos.x >= line.boxStartX - 15 && pos.x <= line.endX + 5 &&
+        pos.y >= line.top - 25  && pos.y <= line.bottom + 5)
 
     if (hoveredLineIdx === -1) return null
 
@@ -59,8 +59,9 @@ function getHoveredLine(pos, isMouseDown) {
 
 function isNWpoint(pos) {
     const line = getHoveredLine(pos)
-    return pos.x >= line.boxStartX - 5 && pos.x <= line.boxStartX + 8 &&
-        pos.y >= line.top - 5 && pos.y <= line.top + 8
+    console.log(line)
+    return pos.x >= line.boxStartX - 15 && pos.x <= line.boxStartX + 15 &&
+        pos.y >= line.top - 25 && pos.y <= line.top + line.height * 15
 }
 
 // Move the line by a delta from the pervious pos

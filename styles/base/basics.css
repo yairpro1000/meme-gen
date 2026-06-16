@@ -1,19 +1,26 @@
 * {
     box-sizing: border-box;
-    transition: .6s;
+    opacity: 1;
+    transition: opacity 1s,  transform .6s;
+    /* transition: ; */
 }
 
 html {
-    font-family: poppins-light;;
+    font-family: poppins-light;
+    ;
 }
 
 body {
     margin: 0;
     height: 100vh;
-    >* {z-index: 1;}
+
+    >* {
+        z-index: 1;
+    }
 }
 
-input, button {
+input,
+button {
     border: 0;
     background-color: inherit;
 }
@@ -23,6 +30,8 @@ option {
 }
 
 a {
-  color: inherit; /* blue colors for links too */
-  text-decoration: inherit; /* no underline */
+    color: inherit;
+    /* blue colors for links too */
+    text-decoration: inherit;
+    /* no underline */
 }

@@ -30,7 +30,7 @@
 .gallery,
 .editor {
     height: 100%;
-    transform: scale(1);
+    /* transform: scale(1); */
 }
 
 .editor {

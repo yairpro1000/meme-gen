@@ -65,6 +65,10 @@ function getImageById(imgId) {
     return gImgs.find(img => img.id === imgId)
 }
 
+function getSelectedImgUrl() {
+    return gImgs.find(img => img.id === getMeme().selectedImgId).url
+}
+
 function setUserImg(dataUrl) {
     gImgs[0].url = dataUrl
 }
