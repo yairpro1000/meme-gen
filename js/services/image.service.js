@@ -3,37 +3,38 @@
 var gImgs = [
     { id: 0, url: '', keywords: [] },
     { id: 1, url: 'images/1.jpg', keywords: ['funny', 'politics'] },
-    { id: 2, url: 'images/2.jpg', keywords: ['funny', 'politics'] },
-    { id: 3, url: 'images/3.jpg', keywords: ['funny', 'politics'] },
-    { id: 4, url: 'images/4.jpg', keywords: ['Animal'] },
-    { id: 5, url: 'images/5.jpg', keywords: ['Men'] },
-    // { id: 6, url: 'images/6.jpg', keywords: ['Women'] },
+    { id: 2, url: 'images/2.jpg', keywords: ['clever', 'funny', 'sarcastic', 'woman', 'smile'] },
+    { id: 3, url: 'images/3.jpg', keywords: ['cure', 'animal'] },
+    { id: 4, url: 'images/4.jpg', keywords: ['baby', 'strong', 'brave'] },
+    { id: 5, url: 'images/5.jpg', keywords: ['cute', 'animal'] },
+    { id: 6, url: 'images/6.jpg', keywords: ['woman', 'politics', 'comic'] },
     // { id: 7, url: 'images/7.jpg', keywords: ['comic'] },
-    { id: 8, url: 'images/8.jpg', keywords: ['smile'] },
-    // { id: 9, url: 'images/9.jpg', keywords: ['Animal'] },
-    // { id: 10, url: 'images/10.jpg', keywords: ['reaction'] },
-    { id: 11, url: 'images/11.jpg', keywords: ['movie'] },
+    { id: 8, url: 'images/8.jpg', keywords: ['animal', 'cute'] },
+    { id: 9, url: 'images/9.jpg', keywords: ['woman', 'comic', 'funny', 'smile', 'movie'] },
+    { id: 10, url: 'images/10.jpg', keywords: ['animal', 'cute'] },
+    { id: 11, url: 'images/11.jpg', keywords: ['movie', 'man'] },
     // { id: 12, url: 'images/12.jpg', keywords: ['Men'] },
-    { id: 13, url: 'images/13.jpg', keywords: ['Women'] },
-    { id: 14, url: 'images/14.jpg', keywords: ['comic'] },
-    { id: 15, url: 'images/15.jpg', keywords: ['smile'] },
-    { id: 16, url: 'images/16.jpg', keywords: ['sarcastic'] },
-    { id: 17, url: 'images/17.jpg', keywords: ['Animal'] },
-    { id: 18, url: 'images/18.jpg', keywords: ['classic'] },
+    { id: 13, url: 'images/13.jpg', keywords: ['baby'] },
+    { id: 14, url: 'images/14.jpg', keywords: ['comic', 'movie', 'strong'] },
+    { id: 15, url: 'images/15.jpg', keywords: ['comic', 'smile'] },
+    { id: 16, url: 'images/16.jpg', keywords: ['baby', 'smile'] },
+    { id: 17, url: 'images/17.jpg', keywords: ['politics', 'smile'] },
+    { id: 18, url: 'images/18.jpg', keywords: ['man', 'movie'] },
 ]
 
 var gKeywordSearchCountMap = {
     funny: 7,
+    animal: 1,
+    smile: 9,
     politics: 3,
-    comic: 21,
+    baby: 20,
+    comic: 15,
     cute: 10,
     strong: 2,
     angry: 6,
-    Animal: 1,
-    Men: 4,
-    Women: 8,
-    smile: 9,
-    reaction: 5,
+    man: 4,
+    brave: 3, 
+    woman: 8,
     movie: 7,
     sarcastic: 2,
     classic: 10
@@ -54,7 +55,7 @@ function increaseKeywordCount(keyword) {
 
 function getImages(keyword = '', filter = '') {
     if (filter) {
-        return gImgs.slice(1).filter(img => img.keywords.some(k => k.includes(filter)))
+        return gImgs.slice(1).filter(img => img.keywords.some(k => k.includes(filter.toLowerCase())))
     }
     if (keyword) return gImgs.slice(1).filter(img => img.keywords.includes(keyword))
 
