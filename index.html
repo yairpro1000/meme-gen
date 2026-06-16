@@ -116,8 +116,6 @@
                     <i class="fa-solid fa-align-right"></i>
                 </button>
 
-
-                
                 <select name="font-family" id="font-family" class="font-family" onchange="onSetFontFamily(this.value)">
                     <option value="poppins-medium">Poppins</option>
                     <option value="arial">Arial</option>
@@ -125,62 +123,35 @@
                     <option value="cursive">Cursive</option>
                 </select>
 
-                
                 <button type="button" class="font-style-btn underline" onclick="onSetFontStyle('underline')">U</button>
                 <button type="button" class="font-style-btn italic" onclick="onSetFontStyle('italic')">I</button>
-                <!-- <select name="font-style" id="font-style" class="font-style" onchange="onSetFontStyle(this.value)">hello
-                    <option value="underline" style="text-decoration: underline;">U</option>
-                    <!-- <option value="line-trought" style="text-decoration: line-through;">S</option> -->
-                    <!-- <option value="italic" style="font-style: italic;">I</option> 
-                </select> -->
-                
-                
-                <!-- <select name="text-align" id="text-align" class="text-align" onchange="onSetTextAlign(this)">
-                    <option value="left">◀️</option>
-                    <option value="center">↔️</option>
-                    <option value="right">▶️</option>
-                    <option value="test">
-                        <div>
-                            <svg class="icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M44 24H56V44H76V56H56V76H44V56H24V44H44Z" fill="black" />
-                            </svg>
-                        </div>
-                    </option>
-                </select> -->
-                
-                <!-- <label for="stroke-color">🖌️</label>
-                <input type="color" name="stroke-color" id="stroke-color" oninput="onSetStrokeColor(this.value)"> -->
+
                 <label for="fill-color" class="fill-color">
                     <i class="fa-solid fa-palette"></i>
                 </label>
                 <input type="color" name="fill-color" id="fill-color" oninput="onSetFillColor(this.value)">
             </div>
-            <!-- </form> -->
             <div class="share">
-                
+
                 <div class="share-btn btn-3d">
                     <div class="share-wrapper">
                         <i class="fa-solid fa-share-nodes"></i>
                         <form method="POST" enctype="multipart/form-data" onsubmit="onUploadImg(event)">
-                            <!-- <input name="img" id="imgData" type="hidden" /> -->
                             <button class="btn" type="submit">Share</button>
                         </form>
                     </div>
                 </div>
-                
+
                 <div class="download-btn btn-3d">
                     <div class="share-wrapper">
                         <i class="fa-solid fa-download"></i>
                         <button type="button" onclick=onDownloadCanvas(this)>Download</button>
                     </div>
                 </div>
-                <!-- <div class="share-container"></div> -->
             </div>
         </div>
 
     </section>
-    <!-- </main> -->
-
 
     <div class="test"><img src="" alt=""></div>
 
