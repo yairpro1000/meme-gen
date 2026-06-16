@@ -26,6 +26,32 @@
         display: grid;
     }
 
+    button,
+    .btn-3d,
+    .btn-3d *,
+    a,
+    label,
+    select {
+        cursor: pointer;
+        transition: box-shadow .3s;
+    }
+
+    .btn-3d input, .meme-text {
+        cursor: text;
+    }
+
+    button:hover:not(.btn-3d button),
+    a:hover:not(.btn-3d a),
+    select:hover,
+    label:hover {
+        /* background: var(--clr-gradient-mark); */
+        box-shadow: 0px 0px 14px 4px rgb(0 0 0 / 40%);
+    }
+
+    .btn-3d:hover {
+        box-shadow: 0px 0px 14px 4px rgba(247, 247, 247, 0.909);
+    }
+
     .meme-text {
         border-radius: 99px;
 
