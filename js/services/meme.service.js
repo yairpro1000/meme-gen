@@ -59,7 +59,6 @@ function getHoveredLine(pos, isMouseDown) {
 
 function isNWpoint(pos) {
     const line = getHoveredLine(pos)
-    console.log(line)
     return pos.x >= line.boxStartX - 15 && pos.x <= line.boxStartX + 15 &&
         pos.y >= line.top - 25 && pos.y <= line.top + line.height * 15
 }

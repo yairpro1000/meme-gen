@@ -45,7 +45,11 @@ function onDown(ev) {
 
     const clickedLine = getHoveredLine(gCurrPos, true)
 
-    if (!clickedLine) return
+    if (!clickedLine) {
+        setSelectedLineIdx(-1)
+        renderMeme()
+        return
+    }
 
     if (isNWpoint(gCurrPos)) {
         setLineResizeState(true)
@@ -144,8 +148,16 @@ function onClearCanvas() {
 }
 
 function onDownloadCanvas(elLink) {
-    console.log(getDataUrl())
-    elLink.href = getDataUrl()
+    setSelectedLineIdx(-1)
+    renderMeme(setDownloadUrl)
+    
+}
+
+function setDownloadUrl() {
+     const a = document.createElement('a');
+  a.href = getDataUrl()
+  a.download = 'my-meme.png'
+  a.click()
 }
 
 function getDataUrl() {
@@ -154,7 +166,7 @@ function getDataUrl() {
 
 /// MEME
 
-function renderMeme() {
+function renderMeme(onFinish, onFinishArgs = []) {
     const { selectedImgId, lines } = getMeme()
     const { url: imgUrl } = getImageById(selectedImgId)
 
@@ -169,6 +181,9 @@ function renderMeme() {
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
         lines.forEach((line, idx) => renderText(line, idx))
         onSelectLine()
+        if (onFinish) {
+            onFinish(...onFinishArgs)
+        }
     }
 
     elImg.src = imgUrl
@@ -319,16 +334,16 @@ function showEditor() {
     if (!getSelectedImgUrl()) elFilePicker.classList.remove('hidden')
     else elFilePicker.classList.add('hidden')
 
-        document.body.classList.remove('gallery-mode')
+    document.body.classList.remove('gallery-mode')
 
 
-document.querySelector('select.font-family').value = getSelectedLine().font
+    document.querySelector('select.font-family').value = getSelectedLine().font
 
-setTimeout(() => {
-    const elEditor = document.querySelector('.editor')
-    resizeCanvas()
-    renderMeme()
-    
+    setTimeout(() => {
+        const elEditor = document.querySelector('.editor')
+        resizeCanvas()
+        renderMeme()
+
         elEditor.classList.remove('hidden')
     }, 650)
 }
@@ -373,7 +388,6 @@ function onUploadImg(ev) {
 
     // After a succesful upload, allow the user to share on Facebook
     function onSuccess(uploadedImgUrl) {
-        console.log('hi')
         const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl)
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}`)
     }
