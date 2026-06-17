@@ -19,6 +19,7 @@
         justify-content: center;
 
         min-height: 88vh;
+        max-width: 95vw;
 
         >* {
             grid-column: 1;
