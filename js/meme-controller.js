@@ -4,7 +4,6 @@ let gElCanvas
 let gCtx
 
 let gCurrPos
-// let gIsMouseDown = false
 let gIsLineSelected = false
 
 const TOUCH_EVENTS = ['touchstart', 'touchmove', 'touchend']
@@ -12,8 +11,6 @@ const TOUCH_EVENTS = ['touchstart', 'touchmove', 'touchend']
 function onInit() {
     gElCanvas = document.querySelector('canvas')
     gCtx = gElCanvas.getContext('2d')
-
-    resizeCanvas()
     addListeners()
 
     renderGallery()
@@ -46,7 +43,7 @@ function onDown(ev) {
     const clickedLine = getHoveredLine(gCurrPos, true)
 
     if (!clickedLine) {
-        setSelectedLineIdx(-1)
+        // setSelectedLineIdx(-1)
         renderMeme()
         return
     }
@@ -60,7 +57,7 @@ function onDown(ev) {
         document.body.style.cursor = 'grabbing'
     }
 
-    onSelectLine()
+    renderMeme()
 }
 
 function onMove(ev) {
@@ -129,298 +126,303 @@ function getEvPos(ev) {
 //// CANVAS
 
 function resizeCanvas() {
-    gElCanvas.width = 0
-    const elContainer = document.querySelector('.canvas-container')
-    gElCanvas.width = elContainer.clientWidth
+    
+    function resize(imgHeight, imgWidth) {
+        console.log(imgHeight, imgWidth)
+        const elEditContainer = document.querySelector('.edit-pannel')
+        const elCanvasContainer = document.querySelector('.canvas-container')
+        elCanvasContainer.classList.remove('align-center')
+        elCanvasContainer.classList.remove('justify-center')
+        
+        gElCanvas.height = 0
+        gElCanvas.width = 0
+        if (window.innerWidth < 900) {
+            const ratio = imgWidth / imgHeight
+            gElCanvas.width = Math.max(180, Math.min(elCanvasContainer.clientHeight * ratio, window.innerWidth * 0.9))
+            gElCanvas.height = gElCanvas.width * imgHeight / imgWidth
+        } else {
+            gElCanvas.height = Math.max(180, Math.min(elCanvasContainer.clientHeight, elCanvasContainer.clientHeight * imgHeight / imgWidth, elCanvasContainer.clientWidth * imgHeight / imgWidth))
+            gElCanvas.width = gElCanvas.height * imgWidth / imgHeight
+        }
+        elCanvasContainer.classList.add('align-center')
+        elCanvasContainer.classList.add('justify-center')
+        
+        const { lines, selectedLineIdx } = getMeme()
+        getMeme().lines.forEach((line, idx) => {
+            setSelectedLineIdx(idx)
+            setLineStartX(gElCanvas, gCtx)
+        })
+        setSelectedLineIdx(selectedLineIdx) //restore}
+    }
+    const elImg = getSelectedImgAsElement()
+    elImg.onload = () => resize(elImg.naturalHeight, elImg.naturalWidth)
 
-    const { lines, selectedLineIdx } = getMeme()
-    getMeme().lines.forEach((line, idx) => {
-        setSelectedLineIdx(idx)
-        setLineStartX(gElCanvas, gCtx)
-    })
-    setSelectedLineIdx(selectedLineIdx) //restore
     renderMeme()
 }
 
 
-function onClearCanvas() {
-    gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
-}
+    function onClearCanvas() {
+        gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
+    }
 
-function onDownloadCanvas(elLink) {
-    setSelectedLineIdx(-1)
-    renderMeme(setDownloadUrl)
-    
-}
+    function onDownloadCanvas(elLink) {
+        setSelectedLineIdx(-1)
+        renderMeme(setDownloadUrl)
 
-function setDownloadUrl() {
-     const a = document.createElement('a');
-  a.href = getDataUrl()
-  a.download = 'my-meme.png'
-  a.click()
-}
+    }
 
-function getDataUrl() {
-    return gElCanvas.toDataURL()
-}
+    function setDownloadUrl() {
+        const a = document.createElement('a');
+        a.href = getDataUrl()
+        a.download = 'my-meme.png'
+        a.click()
+    }
 
-/// MEME
+    function getDataUrl(fileType = 'image/jpeg') {
+        return gElCanvas.toDataURL(fileType)
+    }
 
-function renderMeme(onFinish, onFinishArgs = []) {
-    const { selectedImgId, lines } = getMeme()
-    const { url: imgUrl } = getImageById(selectedImgId)
+    /// MEME
 
-    const elImg = new Image()
+    function renderMeme(onFinish, onFinishArgs = []) {
+        const { selectedImgId, lines } = getMeme()
 
-    function renderFullMeme(img) {
-        const imgRatio = img.naturalHeight / img.naturalWidth
-        gElCanvas.height = imgRatio * gElCanvas.width
-        document.querySelector('.edit-pannel').style.heightOffset = imgRatio * gElCanvas.width
+        function renderFullMeme(img) {
+            onClearCanvas()
+            gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
 
-        onClearCanvas()
-        gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
-        lines.forEach((line, idx) => renderText(line, idx))
-        onSelectLine()
-        if (onFinish) {
-            onFinish(...onFinishArgs)
+            lines.forEach((line, idx) => {
+                renderText(line, idx)
+            })
+            onSelectLine()
+            if (onFinish) {
+                onFinish(...onFinishArgs)
+            }
+        }
+
+        const elImg = getSelectedImgAsElement()
+        elImg.onload = () => renderFullMeme(elImg)
+    }
+
+    /// TEXT
+    function onTextInput(txt) {
+        setLineText(txt)
+        renderMeme()
+    }
+
+    function onAddLine() {
+        addLine(gElCanvas)
+        renderMeme()
+    }
+
+    function onRemoveLine() {
+        removeLine()
+        renderMeme()
+    }
+
+    function onChangeFontSize(amount, type = 'dir') {
+        const { sizeRatio } = getSelectedLine()
+        const size = Math.ceil(sizeRatio * gElCanvas.width)
+
+        // if 'dir' (direction) then will be current size * 1.1 or 0.9
+        const newSizeRatio = type === 'dir' ? sizeRatio * (1 + amount / 10) : (size + amount) / gElCanvas.width
+        setFontSize(newSizeRatio)
+        renderMeme()
+    }
+
+    function onSetStrokeColor(color) {
+        setLineStrokeColor(color)
+        renderMeme()
+    }
+
+    function onSetFillColor(color) {
+        setLineFillColor(color)
+        renderMeme()
+    }
+
+    function onSetFontFamily(fontFamily) {
+        setLineFontFamily(fontFamily)
+        renderMeme()
+    }
+
+    function onSetFontStyle(fontStyle) {
+        setLineFontStyle(fontStyle)
+        renderMeme()
+    }
+
+    function onSetTextAlign(elTextAlign) {
+        setLineTextAlign(elTextAlign.value)
+        setLineStartX(gElCanvas, gCtx)
+        renderMeme()
+
+        elTextAlign.value = ''
+    }
+
+    function onSetTextAlign2(alignValue) {
+        setLineTextAlign(alignValue)
+        setLineStartX(gElCanvas, gCtx)
+        renderMeme()
+    }
+
+    function renderText(line, idx) {
+        const { txt, textAlign, startX, boxStartX, top, bottom, sizeRatio, font, fontStyle, isUnderline, fillColor, strokeColor } = line
+
+        const size = Math.ceil(sizeRatio * gElCanvas.width)
+        gCtx.font = `${fontStyle} ${size}px  ${font}`
+        gCtx.textAlign = 'center'
+
+        setLineProportions(idx, gCtx, gElCanvas)
+        drawLineRect(idx)
+
+        gCtx.strokeStyle = strokeColor
+        gCtx.fillStyle = fillColor
+        // gCtx.strokeText(txt, startX, bottom, gElCanvas.width - boxStartX)
+        gCtx.fillText(txt.toUpperCase(), startX, bottom, gElCanvas.width - boxStartX)
+
+
+        if (isUnderline) {
+            gCtx.beginPath();
+            gCtx.strokeStyle = line.fillColor;
+            gCtx.lineWidth = 2;
+            gCtx.moveTo(line.boxStartX, line.bottom + 2);
+            gCtx.lineTo(line.endX, line.bottom + 2);
+            gCtx.stroke();
         }
     }
 
-    elImg.src = imgUrl
-    elImg.onload = () => renderFullMeme(elImg)
-}
-
-/// TEXT
-function onTextInput(txt) {
-    setLineText(txt)
-    renderMeme()
-}
-
-function onAddLine() {
-    addLine(gElCanvas)
-    renderMeme()
-}
-
-function onRemoveLine() {
-    removeLine()
-    renderMeme()
-}
-
-function onChangeFontSize(amount, type = 'dir') {
-    const { sizeRatio } = getSelectedLine()
-    const size = Math.ceil(sizeRatio * gElCanvas.width)
-
-    // if 'dir' (direction) then will be current size * 1.1 or 0.9
-    const newSizeRatio = type === 'dir' ? sizeRatio * (1 + amount / 10) : (size + amount) / gElCanvas.width
-    setFontSize(newSizeRatio)
-    renderMeme()
-}
-
-function onSetStrokeColor(color) {
-    setLineStrokeColor(color)
-    renderMeme()
-}
-
-function onSetFillColor(color) {
-    setLineFillColor(color)
-    renderMeme()
-}
-
-function onSetFontFamily(fontFamily) {
-    setLineFontFamily(fontFamily)
-    renderMeme()
-}
-
-function onSetFontStyle(fontStyle) {
-    setLineFontStyle(fontStyle)
-    renderMeme()
-}
-
-function onSetTextAlign(elTextAlign) {
-    setLineTextAlign(elTextAlign.value)
-    setLineStartX(gElCanvas, gCtx)
-    renderMeme()
-
-    elTextAlign.value = ''
-}
-
-function onSetTextAlign2(alignValue) {
-    setLineTextAlign(alignValue)
-    setLineStartX(gElCanvas, gCtx)
-    renderMeme()
-
-    elTextAlign.value = ''
-}
-
-function renderText(line, idx) {
-    const { txt, textAlign, startX, boxStartX, top, bottom, sizeRatio, font, fontStyle, isUnderline, fillColor, strokeColor } = line
-
-    const size = Math.ceil(sizeRatio * gElCanvas.width)
-    gCtx.font = `${fontStyle} ${size}px  ${font}`
-    gCtx.textAlign = 'center'
-
-    setLineProportions(idx, gCtx, gElCanvas)
-    drawLineRect(idx)
-
-    gCtx.strokeStyle = strokeColor
-    gCtx.fillStyle = fillColor
-    // gCtx.strokeText(txt, startX, bottom, gElCanvas.width - boxStartX)
-    gCtx.fillText(txt.toUpperCase(), startX, bottom, gElCanvas.width - boxStartX)
-
-
-    if (isUnderline) {
-        gCtx.beginPath();
-        gCtx.strokeStyle = line.fillColor;
-        gCtx.lineWidth = 2;
-        gCtx.moveTo(line.boxStartX, line.bottom + 2);
-        gCtx.lineTo(line.endX, line.bottom + 2);
-        gCtx.stroke();
-    }
-}
-
-function onSwitchLine() {
-    nextLine()
-    renderMeme()
-}
-
-function onSelectLine() {
-    const line = getSelectedLine()
-    if (!line) renderTextInput('')
-    else {
-        renderTextInput(line.txt)
-        document.querySelector('select.font-family').value = getSelectedLine().font
-    }
-}
-
-function renderTextInput(txt) {
-    const elTxtInput = document.querySelector('#lineText')
-    elTxtInput.value = txt
-}
-
-function drawLineRect(idx) {
-    if (getMeme().selectedLineIdx != idx) return
-
-    const { boxStartX, top, width, height } = getSelectedLine()
-    gCtx.strokeStyle = 'gray'
-    gCtx.fillStyle = '#ffffff2e'
-    // gCtx.strokeRect(startX, top - 2, width, height + 6)
-
-    gCtx.beginPath()
-    gCtx.roundRect(boxStartX - 10, top - 10, width + 20, height + 20, [20])
-    gCtx.stroke()
-    gCtx.fill()
-
-    // Resize arrow
-    if (gElCanvas.width <= 700) {
-        const elImg = new Image()
-        elImg.onload = () => { gCtx.drawImage(elImg, boxStartX - 15, top - 15, 25, 25) }
-        elImg.src = 'images/svg/resize_arrow.svg'
-    }
-}
-
-/// GALLERY
-
-function onImgSelect(imgId) {
-    setMemeImg(imgId)
-    showEditor()
-}
-
-/// NAVIGATION
-function showEditor() {
-    const elGallery = document.querySelector('.gallery')
-    elGallery.classList.add('hidden')
-
-    const elFilePicker = document.querySelector('.editor .file-picker-wrapper')
-    if (!getSelectedImgUrl()) elFilePicker.classList.remove('hidden')
-    else elFilePicker.classList.add('hidden')
-
-    document.body.classList.remove('gallery-mode')
-
-
-    document.querySelector('select.font-family').value = getSelectedLine().font
-
-    setTimeout(() => {
-        const elEditor = document.querySelector('.editor')
-        resizeCanvas()
+    function onSwitchLine() {
+        nextLine()
         renderMeme()
+    }
 
-        elEditor.classList.remove('hidden')
-    }, 650)
-}
+    function onSelectLine() {
+        const line = getSelectedLine()
+        if (!line) renderTextInput('')
+        else {
+            renderTextInput(line.txt)
+            document.querySelector('select.font-family').value = getSelectedLine().font
+        }
+    }
 
-function showGallery() {
-    const elEditor = document.querySelector('.editor')
-    elEditor.classList.add('hidden')
-    document.body.classList.add('gallery-mode')
+    function renderTextInput(txt) {
+        const elTxtInput = document.querySelector('#lineText')
+        elTxtInput.value = txt
+    }
 
-    setTimeout(() => {
-        renderKeywords(6)
-        renderGallery()
+    function drawLineRect(idx) {
+        if (getMeme().selectedLineIdx != idx) return
 
-        const elGallery = document.querySelector('.gallery')
-        elGallery.classList.remove('hidden')
-    }, 600)
-}
+        const { boxStartX, top, width, height } = getSelectedLine()
+        gCtx.strokeStyle = 'gray'
+        gCtx.fillStyle = '#ffffff2e'
+        // gCtx.strokeRect(startX, top - 2, width, height + 6)
 
-/// USER IMAGE
-function onImgInput(ev) {
-    const elFilePickers = document.querySelectorAll('.file-picker')
-    loadImageFromInput(ev)
-}
+        gCtx.beginPath()
+        gCtx.roundRect(boxStartX - 10, top - 10, width + 20, height + 20, [20])
+        gCtx.stroke()
+        gCtx.fill()
 
-function loadImageFromInput(ev) {
-    const reader = new FileReader()
+        // Resize arrow
+        if (gElCanvas.width <= 700) {
+            const elImg = new Image()
+            elImg.onload = () => { gCtx.drawImage(elImg, boxStartX - 15, top - 15, 25, 25) }
+            elImg.src = 'images/svg/resize_arrow.svg'
+        }
+    }
 
-    reader.onload = event => {
-        setUserImg(event.target.result)
-        setMemeImg(0)
-        renderMeme()
+    /// GALLERY
+
+    function onImgSelect(imgId) {
+        setMemeImg(imgId)
         showEditor()
     }
-    reader.readAsDataURL(ev.target.files[0])
-}
 
-/// SHARE CANVAS
+    /// NAVIGATION
+    function showEditor() {
+        const elGallery = document.querySelector('.gallery')
+        elGallery.classList.add('hidden')
+        document.body.classList.remove('gallery-mode')
 
-function onUploadImg(ev) {
-    ev.preventDefault()
-    const canvasData = gElCanvas.toDataURL('image/jpeg')
+        document.querySelector('select.font-family').value = getSelectedLine().font
 
-    // After a succesful upload, allow the user to share on Facebook
-    function onSuccess(uploadedImgUrl) {
-        const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl)
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}`)
+        setTimeout(() => {
+            const elEditor = document.querySelector('.editor')
+            elEditor.classList.remove('hidden')
+            resizeCanvas()
+            renderMeme()
+
+        }, 650)
     }
 
-    uploadImg(canvasData, onSuccess)
-}
+    function showGallery() {
+        const elEditor = document.querySelector('.editor')
+        elEditor.classList.add('hidden')
+        document.body.classList.add('gallery-mode')
 
-async function uploadImg(imgData, onSuccess) {
-    const CLOUD_NAME = 'webify'
-    const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`
+        setTimeout(() => {
+            renderKeywords(6)
+            renderGallery()
 
-    const formData = new FormData()
-    formData.append('file', imgData)
-    formData.append('upload_preset', 'webify')
-
-    try {
-        const res = await fetch(UPLOAD_URL, {
-            method: 'POST',
-            body: formData,
-        })
-        const data = await res.json()
-        console.log('Cloudinary response:', data)
-        onSuccess(data.secure_url)
-    } catch (err) {
-        console.log(err)
+            const elGallery = document.querySelector('.gallery')
+            elGallery.classList.remove('hidden')
+        }, 600)
     }
-}
 
-/// Utils
+    /// USER IMAGE
+    function onImgInput(ev) {
+        // const elFilePickers = document.querySelectorAll('.file-picker')
+        loadImageFromInput(ev)
+    }
 
-function toggleElementVisible(el) {
-    el.classList.toggle('hidden')
-    setTimeout(() => {
-        el.style.display = 'none'
-    }, 600)
-}
+    function loadImageFromInput(ev) {
+        const reader = new FileReader()
+
+        reader.onload = event => {
+            setUserImg(event.target.result)
+            setMemeImg(0)
+            renderMeme()
+            showEditor()
+        }
+        reader.readAsDataURL(ev.target.files[0])
+    }
+
+    /// SHARE CANVAS
+
+    function onUploadImg(ev) {
+        ev.preventDefault()
+        setSelectedLineIdx(-1)
+        renderMeme(uploadAndShareImg, [ev])
+    }
+
+    function uploadAndShareImg(ev) {
+        const canvasData = getDataUrl()
+
+        // After a succesful upload, allow the user to share on Facebook
+        function onSuccess(uploadedImgUrl) {
+            const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl)
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}`)
+        }
+
+        uploadImg(canvasData, onSuccess)
+    }
+
+    async function uploadImg(imgData, onSuccess) {
+        const CLOUD_NAME = 'webify'
+        const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`
+
+        const formData = new FormData()
+        formData.append('file', imgData)
+        formData.append('upload_preset', 'webify')
+
+        try {
+            const res = await fetch(UPLOAD_URL, {
+                method: 'POST',
+                body: formData,
+            })
+            const data = await res.json()
+            console.log('Cloudinary response:', data)
+            onSuccess(data.secure_url)
+        } catch (err) {
+            console.log(err)
+        }
+    }

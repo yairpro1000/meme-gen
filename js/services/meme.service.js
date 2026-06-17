@@ -48,12 +48,12 @@ function setLineResizeState(isResize) {
 function getHoveredLine(pos, isMouseDown) {
     const hoveredLineIdx = getMeme().lines.findIndex(line =>
         pos.x >= line.boxStartX - 15 && pos.x <= line.endX + 5 &&
-        pos.y >= line.top - 25  && pos.y <= line.bottom + 5)
+        pos.y >= line.top - 25 && pos.y <= line.bottom + 5)
+
+    if (isMouseDown) setSelectedLineIdx(hoveredLineIdx)
 
     if (hoveredLineIdx === -1) return null
 
-    if (isMouseDown) setSelectedLineIdx(hoveredLineIdx)
-        
     return gMeme.lines[hoveredLineIdx]
 }
 
@@ -101,7 +101,7 @@ function setLineFontStyle(fontStyle) {
         return
     }
     const currStyle = gMeme.lines[gMeme.selectedLineIdx].fontStyle
-    const newStyle = fontStyle === currStyle? 'normal' : fontStyle
+    const newStyle = fontStyle === currStyle ? 'normal' : fontStyle
     gMeme.lines[gMeme.selectedLineIdx].fontStyle = newStyle
 }
 
@@ -112,13 +112,13 @@ function setLineTextAlign(textAlign) {
 function setLineStartX(elCanvas, ctx) {
     const line = getSelectedLine()
     switch (line.textAlign) {
-        case 'right': 
-        line.startX = elCanvas.width - line.width / 2 - 10
-        break
+        case 'right':
+            line.startX = elCanvas.width - line.width / 2 - 10
+            break
 
-        case 'left': 
-        line.startX = line.width / 2 + 10
-        break
+        case 'left':
+            line.startX = line.width / 2 + 10
+            break
 
         default: line.startX = elCanvas.width / 2
     }
@@ -129,7 +129,7 @@ function setLineStartX(elCanvas, ctx) {
 
 function setLineProportions(idx, ctx, elCanvas) {
     const line = gMeme.lines[idx]
-    
+
     const size = Math.ceil(line.sizeRatio * elCanvas.width)
     gCtx.font = `${line.fontStyle} ${size}px  ${line.font}`
     const { width, actualBoundingBoxAscent: height } = ctx.measureText(line.txt)
@@ -145,30 +145,36 @@ function setMemeImg(imgId) {
     gMeme.selectedImgId = imgId
 }
 
+function getSelectedImgAsElement() {
+    const elImg = new Image()
+    elImg.src = getSelectedImgUrl()
+    return elImg
+}
+
 function _createMeme(imgId) {
     return {
-    selectedImgId: imgId,
-    selectedLineIdx: 0,
-    isLineDrag: false,
-    isLineResize: false,
-    lines: [
-        {
-            txt: 'Wazzup??',
-            textAlign: 'center',
-            width: 0,
-            startX: 100,
-            boxStartX: 0,
-            endX: 0,
-            height: 0,
-            bottom: 100,
-            top: 0,
-            sizeRatio: .1,
-            font: 'poppins-medium',
-            fontStyle: 'bold',
-            isUnderline: false,
-            fillColor: 'white',
-            strokeColor: 'red',
-        },
-    ]
-}
+        selectedImgId: imgId,
+        selectedLineIdx: 0,
+        isLineDrag: false,
+        isLineResize: false,
+        lines: [
+            {
+                txt: 'Wazzup??',
+                textAlign: 'center',
+                width: 0,
+                startX: 100,
+                boxStartX: 0,
+                endX: 0,
+                height: 0,
+                bottom: 100,
+                top: 0,
+                sizeRatio: .1,
+                font: 'poppins-medium',
+                fontStyle: 'bold',
+                isUnderline: false,
+                fillColor: 'white',
+                strokeColor: 'red',
+            },
+        ]
+    }
 }

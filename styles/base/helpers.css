@@ -1,9 +1,12 @@
 .gallery.hidden,
 .editor.hidden,
 .hidden {
+    display: none;
     height: 0px;
     /* transform: scale(0) rotate(180deg); */
     opacity: 0;
+
+    > * {height: 0;}
 }
 
 *.display-none {
@@ -28,3 +31,12 @@
     font-size: 50%;
     /* מקטין את הגודל כדי שיראה פרופורציונלי */
 }
+
+.align-center {
+    align-self: center;
+}
+
+.justify-center {
+    justify-self: center;
+}
+
