@@ -79,8 +79,10 @@ function setLineText(txt) {
 }
 
 function setFontSize(newSizeRatio) {
+    const line = getSelectedLine()
+    if (!line) return
     if (newSizeRatio < 0.04) return // Avoid extremely small
-    gMeme.lines[gMeme.selectedLineIdx].sizeRatio = newSizeRatio
+    line.sizeRatio = newSizeRatio
 }
 
 function setLineStrokeColor(color) {
@@ -88,7 +90,9 @@ function setLineStrokeColor(color) {
 }
 
 function setLineFillColor(color) {
-    gMeme.lines[gMeme.selectedLineIdx].fillColor = color
+    const line = getSelectedLine()
+    if (!line) return
+    line.fillColor = color
 }
 
 function setLineFontFamily(fontFamily) {
