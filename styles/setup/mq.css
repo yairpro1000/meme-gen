@@ -12,14 +12,14 @@
     }
     
     .editor {
-        grid-template-columns: 1fr;
+        grid-template-columns: 90vw;
         grid-template-rows: minmax(auto, 1fr);
         justify-self: center;
         justify-items: center;
         justify-content: center;
 
         min-height: 88vh;
-        max-width: 95vw;
+        max-width: 90vw;
 
         >* {
             grid-column: 1;
@@ -31,6 +31,7 @@
             /* width: 100%; */
             padding: 1rem;
             justify-content: center;
+            justify-items: center;
 
             .line-style {
                 grid-template-columns: repeat(5, 3.4rem);
