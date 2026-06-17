@@ -138,7 +138,7 @@ function resizeCanvas() {
         gElCanvas.width = 0
         if (window.innerWidth < 900) {
             const ratio = imgWidth / imgHeight
-            gElCanvas.width = Math.max(180, Math.min(elCanvasContainer.clientHeight * ratio, window.innerWidth * 0.9))
+            gElCanvas.width = Math.max(180, Math.min(elCanvasContainer.clientHeight * ratio, window.innerWidth * 0.8))
             gElCanvas.height = gElCanvas.width * imgHeight / imgWidth
         } else {
             gElCanvas.height = Math.max(180, Math.min(elCanvasContainer.clientHeight, elCanvasContainer.clientHeight * imgHeight / imgWidth, elCanvasContainer.clientWidth * imgHeight / imgWidth))
