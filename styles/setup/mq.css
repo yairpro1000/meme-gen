@@ -18,7 +18,7 @@
         justify-items: center;
         justify-content: center;
 
-        min-height: 96vh;
+        min-height: 88vh;
 
         >* {
             grid-column: 1;
@@ -27,8 +27,8 @@
         }
 
         .edit-pannel {
-            width: 100%;
-            /* padding: 1rem; */
+            /* width: 100%; */
+            padding: 1rem;
             justify-content: center;
 
             .line-style {
